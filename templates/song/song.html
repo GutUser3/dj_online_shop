@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Songs</title>
+</head>
+<body>
+<ul>
+    {% for i in song_key %}
+    <li>
+        <h1>{{ i.title }}</h1>
+        <img src="{{ i.album_image.url }}" alt="">
+        <p><strong>{{ i.singer }}</strong></p>
+        <p>{{ i.music_genre }}</p>
+        <p>{{ i.cost }}</p>
+        <p>{{ i.created_at }}</p>
+    </li>
+    {% endfor %}
+</ul>
+</body>
+</html>
