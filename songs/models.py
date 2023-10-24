@@ -1,6 +1,6 @@
 from django.db import models
 
-class Songs(models.Model):
+class Song(models.Model):
 
     class Meta:
         verbose_name = 'Песня'

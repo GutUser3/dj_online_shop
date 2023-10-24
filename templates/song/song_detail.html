@@ -1,0 +1,15 @@
+{% include 'song/header.html' %}
+
+<div class="card" style="width: 18rem;">
+  <img src="{{ song_id.album_image.url }}" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{ song_id.title }}</h5>
+    <p class="card-text">{{ song_id.singer }}</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">{{ song_id.music_genre }}</li>
+    <li class="list-group-item">{{ song_id.cost }}</li>
+    <li class="list-group-item">{{ song_id.created_at }}</li>
+  </ul>
+</div>
+{% include 'song/footer.html' %}
