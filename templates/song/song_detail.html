@@ -1,15 +1,23 @@
-{% include 'song/header.html' %}
+{% extends 'layouts/index.html' %}
+
+{% block content %}
 
 <div class="card" style="width: 18rem;">
-  <img src="{{ song_id.album_image.url }}" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">{{ song_id.title }}</h5>
-    <p class="card-text">{{ song_id.singer }}</p>
-  </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">{{ song_id.music_genre }}</li>
-    <li class="list-group-item">{{ song_id.cost }}</li>
-    <li class="list-group-item">{{ song_id.created_at }}</li>
-  </ul>
+    <img src="{{ song.album_image.url }}" class="card-img-top" alt="...">
+    <div class="card-body">
+        <h5 class="card-title">{{ song.title }}</h5>
+        <p class="card-text">{{ song.singer }}</p>
+        {% for hashtag in song.hashtags.all %}
+            <p>{{ hashtag.title }}</p>
+        {% endfor %}
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">{{ song.music_genre }}</li>
+        <li class="list-group-item">{{ song.cost }}</li>
+        <li class="list-group-item">{{ song.created_at }}</li>
+    </ul>
 </div>
-{% include 'song/footer.html' %}
+
+{% endblock %}
+
+

@@ -16,10 +16,10 @@ def song_list_view(request):
 
 def song_detail_view(request, id):
     if request.method == 'GET':
-        song_id = get_object_or_404(models.Song, id=id)
+        song = get_object_or_404(models.Song, id=id)
 
         context_data = {
-            'song_id': song_id
+            'song': song
         }
         return render(request, 'song/song_detail.html', context=context_data)
 

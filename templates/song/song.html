@@ -1,15 +1,16 @@
-{% include 'song/header.html' %}
+{% extends 'layouts/index.html' %}
 
-<div class="card_block">
-{% for i in song_key %}
-    <div class="card" style="width: 18rem;">
-      <img src="{{ i.album_image.url }}" class="card-img-top" alt="song">
-      <div class="card-body">
-        <h5 class="card-title">{{ i.title }}</h5>
-        <p class="card-text">{{ i.singer }}</p>
-        <a href="/song_detail/{{ i.id }}" class="btn btn-primary">Подробнее</a>
-      </div>
+{% block content %}
+    <div class="card_block">
+        {% for i in song_key %}
+            <div class="card" style="width: 18rem;">
+                <img src="{{ i.album_image.url }}" class="card-img-top" alt="song">
+                <div class="card-body">
+                    <h5 class="card-title">{{ i.title }}</h5>
+                    <p class="card-text">{{ i.singer }}</p>
+                    <a href="/song_detail/{{ i.id }}" class="btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+        {% endfor %}
     </div>
-{% endfor %}
-</div>
-{% include 'song/footer.html' %}
+{% endblock %}

@@ -1,18 +1,17 @@
 from django.db import models
+from songs.constants import SONG_GENRE
+
+class Hashtag(models.Model):
+    title = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.title
 
 class Song(models.Model):
+    """ References """
+    hashtags = models.ManyToManyField(Hashtag)
 
-    class Meta:
-        verbose_name = 'Песня'
-        verbose_name_plural = 'Песни'
-
-    SONG_GENRE = (
-        ("Поп", "Поп"),
-        ("EDM", "EDM"),
-        ("J-Pop", "J-Pop"),
-        ("R&B", "R&B"),
-    )
-
+    """ Base Fields """
     title = models.CharField(max_length=100, verbose_name='Название песни', null=True)
     album_image = models.ImageField(upload_to='', verbose_name='Картинка альбома', null=True)
     music_genre = models.CharField(max_length=100, choices=SONG_GENRE, verbose_name='Жанр песни', null=True)
@@ -22,3 +21,7 @@ class Song(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name = 'Песня'
+        verbose_name_plural = 'Песни'
