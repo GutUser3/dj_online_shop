@@ -1,7 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from datetime import datetime
 from . import models
+from .forms import CreateSongForm
+from .models import Song
+
 
 # Less code way
 
@@ -23,25 +26,28 @@ def song_detail_view(request, id):
         }
         return render(request, 'song/song_detail.html', context=context_data)
 
-# More code way
 
-# def postListView(request):
-#     post_value = models.Post.objects.all()
-#     html_filename = 'song/song.html'
-#     context = {
-#         'post_key': post_value,
-#     }
-#     return render(request, html_filename, context)
+def song_create_view(request):
+    if request.method == 'GET':
+        context_data = {
+            'form': CreateSongForm,
+        }
 
+        return render(request, 'song/create.html', context=context_data)
 
+    if request.method == 'POST':
+        data, files = request.POST, request.FILES
+        form = CreateSongForm(data, files)
 
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            Song.objects.create(
+                album_image=cleaned_data.get('album_image'),
+                title=cleaned_data.get('title'),
+                artist=cleaned_data.get('artist'),
+                music_genre=cleaned_data.get('music_genre'),
+                cost=cleaned_data.get('cost')
+            )
+            return redirect('/song/')
 
-
-def hello_view(request):
-    return HttpResponse("<h1>Hello! It's my project</h1>")
-
-def date_view(request):
-    return HttpResponse(f'<h1>{datetime.now().date()}</h1>')
-
-def goodbye_view(request):
-    return HttpResponse('<h1>Goodbye user!</h1>')
+        return render(request, 'song/create.html', context={'form': form})
