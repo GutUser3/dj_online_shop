@@ -4,6 +4,7 @@ from datetime import datetime
 from . import models
 from .forms import CreateSongForm
 from .models import Song
+from django.template import loader
 
 
 # Less code way
@@ -13,7 +14,8 @@ def song_list_view(request):
         song_value = models.Song.objects.all()
 
         context_data = {
-            'song_key': song_value
+            'song_key': song_value,
+            'user': request.user
         }
         return render(request, 'song/song.html', context=context_data)
 
@@ -35,19 +37,24 @@ def song_create_view(request):
 
         return render(request, 'song/create.html', context=context_data)
 
-    if request.method == 'POST':
-        data, files = request.POST, request.FILES
-        form = CreateSongForm(data, files)
+    if not request.user.is_anonymous:
 
-        if form.is_valid():
-            cleaned_data = form.cleaned_data
-            Song.objects.create(
-                album_image=cleaned_data.get('album_image'),
-                title=cleaned_data.get('title'),
-                artist=cleaned_data.get('artist'),
-                music_genre=cleaned_data.get('music_genre'),
-                cost=cleaned_data.get('cost')
-            )
-            return redirect('/song/')
+        if request.method == 'POST':
+            data, files = request.POST, request.FILES
+            form = CreateSongForm(data, files)
 
-        return render(request, 'song/create.html', context={'form': form})
+            if form.is_valid():
+                cleaned_data = form.cleaned_data
+                Song.objects.create(
+                    album_image=cleaned_data.get('album_image'),
+                    title=cleaned_data.get('title'),
+                    artist=cleaned_data.get('artist'),
+                    music_genre=cleaned_data.get('music_genre'),
+                    cost=cleaned_data.get('cost')
+                )
+                return redirect('/song/')
+
+            return render(request, 'song/create.html', context={'form': form})
+
+    else:
+        return HttpResponse('Error. You should be logged in to add songs.')
