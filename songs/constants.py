@@ -4,3 +4,5 @@ SONG_GENRE = (
     ("J-Pop", "J-Pop"),
     ("R&B", "R&B"),
 )
+
+PAGINATION_LIMIT = 2

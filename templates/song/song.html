@@ -1,16 +1,27 @@
 {% extends 'layouts/index.html' %}
 
 {% block content %}
+    <form action="/song/" method="get">
+        <input type="text" name="search">
+        <input type="submit" name="Search">
+    </form>
     <div class="card_block">
-        {% for i in song_key %}
+        {% for song in songs %}
             <div class="card" style="width: 18rem;">
-                <img src="{{ i.album_image.url }}" class="card-img-top" alt="song">
+                <img src="{{ song.album_image.url }}" class="card-img-top" alt="song">
                 <div class="card-body">
-                    <h5 class="card-title">{{ i.title }}</h5>
-                    <p class="card-text">{{ i.singer }}</p>
-                    <a href="/song_detail/{{ i.id }}" class="btn btn-primary">Подробнее</a>
+                    <h5 class="card-title">{{ song.title }}</h5>
+                    <p class="card-text">{{ song.artist }}</p>
+                    <a href="/song_detail/{{ song.id }}" class="btn btn-primary">Подробнее</a>
                 </div>
             </div>
         {% endfor %}
+    </div>
+    <div class="pages" style="display: flex; justify-content: center">
+    {% for page in pages %}
+        <a href="/song/?page={{ page }}">
+        <button>{{ page }}</button>
+        </a>
+    {% endfor %}
     </div>
 {% endblock %}

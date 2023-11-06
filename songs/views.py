@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from datetime import datetime
@@ -5,19 +6,35 @@ from . import models
 from .forms import CreateSongForm
 from .models import Song
 from django.template import loader
+from songs.constants import PAGINATION_LIMIT
 
-
-# Less code way
 
 def song_list_view(request):
+    print(request.GET)
     if request.method == 'GET':
-        song_value = models.Song.objects.all()
+        songs = models.Song.objects.all()
+        search = request.GET.get('search')
+        page = int(request.GET.get('page', 1))
+
+        max_page = songs.__len__() / PAGINATION_LIMIT
+        if round(max_page) < max_page:
+            max_page = round(max_page) + 1
+        else:
+            max_page = round(max_page)
+
+
+        songs = songs[PAGINATION_LIMIT * (page - 1): PAGINATION_LIMIT * page]
+
+        if search:
+            songs = songs.filter(Q(title__icontains=search) | Q(artist__icontains=search))
+
 
         context_data = {
-            'song_key': song_value,
-            'user': request.user
-        }
+            'songs': songs,
+            'user': request.user,
+            'pages': range(1, max_page + 1)    }
         return render(request, 'song/song.html', context=context_data)
+
 
 def song_detail_view(request, id):
     if request.method == 'GET':
